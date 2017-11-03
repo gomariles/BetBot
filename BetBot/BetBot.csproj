@@ -163,7 +163,6 @@
     </Compile>
     <Compile Include="Models\Bet.cs" />
     <Compile Include="Models\SportEvent.cs" />
-    <Compile Include="Models\BetType.cs" />
     <Compile Include="Models\Sport.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -13,5 +13,6 @@ namespace BetBot.Models
         }
 
         public string Name { get; set; }
+        public List<string> Synonyms { get; set; }
     }
 }

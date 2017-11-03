@@ -14,9 +14,11 @@ namespace BetBot.Controllers
 
         [Route("api/bets")]
         [HttpPost]
-        public void StartBets()
+        public string StartBets()
         {
             _userInfo = new UserInfo();
+
+            return "Started";
         }
 
         // GET api/values
@@ -25,9 +27,9 @@ namespace BetBot.Controllers
         {
             return new List<Sport>
             {
-                new Sport("Football"),
-                new Sport("Basket"),
-                new Sport("MotoGP")
+                new Sport("Football") { Synonyms = new List<string> { "Football", "LaLiga", "Premier" } },
+                new Sport("Basket") {Synonyms = new List<string> { "Basket", "Basketball", "ACB", "NBA" } },
+                new Sport("MotoGP") { Synonyms = new List<string> { "Moto", "MotoGP", "Motos", "Motor", "Motorbikes"} }
             };
         }
 
@@ -48,7 +50,7 @@ namespace BetBot.Controllers
         }
 
         [Route("api/bets/{eventId}")]
-        public IEnumerable<BetType> GetBets(string eventId)
+        public IEnumerable<string> GetEventBets(string eventId)
         {
             switch (eventId)
             {
@@ -56,28 +58,18 @@ namespace BetBot.Controllers
                 case ("2"):
                 case ("3"):
                 case ("4"):
-                    return new List<BetType>
+                    return new List<string>
                     {
-                        new BetType
-                        {
-                            Name = "Score"
-                        },
-                        new BetType
-                        {
-                            Name = "Winner"
-                        }
+                        "Score", "Winner"
                     };
                 case ("5"):
                 case ("6"):
-                    return new List<BetType>
+                    return new List<string>
                     {
-                        new BetType
-                        {
-                            Name = "Winner"
-                        }
+                        "Winner"
                     };
                 default:
-                    return new List<BetType>();
+                    return new List<string>();
             }
         }
 
@@ -94,7 +86,8 @@ namespace BetBot.Controllers
             {
                 EventId = value.EventId,
                 BetResult = value.BetResult,
-                BetType = value.BetType
+                BetType = value.BetType,
+                EventName = value.EventName
             });
 
             return "OK";
@@ -117,7 +110,8 @@ namespace BetBot.Controllers
                             Sport = new Sport("Football"),
                             Team1 = "Real Madrid",
                             Team2 = "Real Betis",
-                            EventName = "LaLiga Match"
+                            EventName = "Real Madrid Real Betis",
+                            Synonyms = new List<string> { "Real Madrid Real Betis", "Madrid Betis", "Real Madrid", "Real Betis", "Betis Madrid", "MadridBetis", "BetisMadrid", "Madrid Real Betis", "Real Madrid Betis" }
                         },
                         new SportEvent
                         {
@@ -125,7 +119,8 @@ namespace BetBot.Controllers
                             Sport = new Sport("Football"),
                             Team1 = "Barcelona",
                             Team2 = "Valencia",
-                            EventName = "LaLiga Match"
+                            EventName = "Barcelona Valencia",
+                            Synonyms = new List<string> { "Barcelona Valencia", "Barsa Valencia", "Valencia Barsa", "Valencia", "Barsa" }
                         },
                     };
         }
@@ -140,7 +135,8 @@ namespace BetBot.Controllers
                             Sport = new Sport("Basket"),
                             Team1 = "Real Madrid",
                             Team2 = "Real Betis",
-                            EventName = "Liga Endesa Match"
+                            EventName = "Real Madrid Real Betis",
+                            Synonyms = new List<string> { "Real Madrid Real Betis", "Madrid Betis", "Real Madrid", "Real Betis", "Betis Madrid", "MadridBetis", "BetisMadrid", "Madrid Real Betis", "Real Madrid Betis" }
                         },
                         new SportEvent
                         {
@@ -148,7 +144,8 @@ namespace BetBot.Controllers
                             Sport = new Sport("Basket"),
                             Team1 = "Barcelona",
                             Team2 = "Valencia",
-                            EventName = "Liga Endesa Match"
+                            EventName = "Barcelona Valencia Basket",
+                            Synonyms = new List<string> { "Barcelona Valencia", "Barsa Valencia", "Valencia Barsa", "Valencia", "Barsa" }
                         },
                     };
         }
@@ -161,13 +158,16 @@ namespace BetBot.Controllers
                         {
                             Id = "5",
                             Sport = new Sport("MotoGP"),
-                            EventName = "Australian GP"
+                            EventName = "Australian GP",
+                            Synonyms = new List<string> {"Australia", "Australian GP", "AustralianGP", "Australia Race" }
+                            
                         },
                         new SportEvent
                         {
                             Id = "6",
                             Sport = new Sport("MotoGP"),
-                            EventName = "World championship"
+                            EventName = "World championship",
+                            Synonyms = new List<string> {"World champion", "Champion" }
                         },
                     };
         }
